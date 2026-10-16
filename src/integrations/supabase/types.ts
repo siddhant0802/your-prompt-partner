@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      assistant_settings: {
+        Row: {
+          daily_limit_per_visitor: number
+          enabled: boolean
+          id: number
+          max_message_chars: number
+          support_contact: string
+          updated_at: string
+        }
+        Insert: {
+          daily_limit_per_visitor?: number
+          enabled?: boolean
+          id?: number
+          max_message_chars?: number
+          support_contact?: string
+          updated_at?: string
+        }
+        Update: {
+          daily_limit_per_visitor?: number
+          enabled?: boolean
+          id?: number
+          max_message_chars?: number
+          support_contact?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      assistant_usage: {
+        Row: {
+          day: string
+          errors: number
+          messages: number
+          visitor_hash: string
+        }
+        Insert: {
+          day?: string
+          errors?: number
+          messages?: number
+          visitor_hash: string
+        }
+        Update: {
+          day?: string
+          errors?: number
+          messages?: number
+          visitor_hash?: string
+        }
+        Relationships: []
+      }
       audit_logs: {
         Row: {
           action: string
@@ -411,6 +459,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      assistant_take_quota: {
+        Args: { _limit: number; _visitor: string }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
