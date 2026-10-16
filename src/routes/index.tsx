@@ -6,7 +6,7 @@ import {
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Eyebrow } from "@/components/site/Badges";
-import { DashboardVisual } from "@/components/site/DashboardVisual";
+import heroImage from "@/assets/hero-workspace.png.asset.json";
 import { ProjectCard } from "@/components/site/ProjectCard";
 import { CATEGORY_ICON } from "@/components/site/ProjectThumbnail";
 import { projectsQuery } from "@/lib/projects/repository";
@@ -71,8 +71,14 @@ function Home() {
               </Button>
             </div>
           </div>
-          <div className="blob relative overflow-hidden bg-surface p-8 sm:p-12 shadow-card">
-            <DashboardVisual />
+          <div className="overflow-hidden rounded-[2rem] shadow-card">
+            <img
+              src={heroImage.url}
+              alt="Student working on a software project on a laptop, with code and project demo cards around her"
+              width={1536}
+              height={1024}
+              className="h-auto w-full"
+            />
           </div>
         </div>
       </section>
