@@ -1,3 +1,4 @@
+import { youtubeVideoId } from "@/lib/youtube";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, Download, ImagePlus, Loader2, Lock, Save, Trash2, Upload } from "lucide-react";
