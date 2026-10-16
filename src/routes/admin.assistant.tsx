@@ -50,9 +50,12 @@ function AssistantAdmin() {
     setSaving(true);
     const { error } = await supabase.from("assistant_settings").update({ ...form, support_contact: form.support_contact.trim().slice(0, 300) || "the Contact Us page", updated_at: new Date().toISOString() }).eq("id", 1);
     setSaving(false);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success("Assistant settings saved");
-    qc.invalidateQueries({ queryKey: ["admin", "assistant-settings"] });
+    void qc.invalidateQueries({ queryKey: ["admin", "assistant-settings"] });
   }
 
   return (
