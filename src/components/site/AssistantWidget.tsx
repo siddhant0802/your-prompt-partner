@@ -125,7 +125,7 @@ export function AssistantWidget() {
   return (
     <>
       {bubbleVisible && (
-        <div className="fixed bottom-[5.5rem] right-5 z-50 flex max-w-[16rem] flex-col items-end" role="status">
+        <div className="fixed bottom-[10rem] right-5 z-50 flex max-w-[16rem] flex-col items-end" role="status">
           <div className="ai-pop-in relative rounded-2xl rounded-br-sm border border-border bg-card py-2.5 pl-3.5 pr-8 text-sm font-medium text-foreground shadow-card">
             {hover && !invite ? "Ask your doubt!" : "Hey! 👋 Have a project doubt? Ask me anything!"}
             <button
