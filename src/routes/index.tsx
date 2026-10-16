@@ -53,12 +53,11 @@ function Home() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-hero" />
-        <div className="absolute inset-0 bg-grid" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-4 py-16 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:py-28">
           <div className="animate-fade-up">
-            <Eyebrow>For Diploma and BE/BTech students</Eyebrow>
-            <h1 className="mt-6 text-5xl font-bold leading-[1.05] sm:text-6xl lg:text-7xl">
-              <span className="text-gradient">Find Your Next Software Project</span>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-violet">Diploma / BE / BTech</p>
+            <h1 className="mt-6 text-5xl font-bold leading-[1.02] sm:text-6xl lg:text-7xl">
+              Find your next <span className="text-violet">software project</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
               Explore working software applications, watch real demonstrations, understand the technologies, and choose a project with confidence.
@@ -67,12 +66,14 @@ function Home() {
               <Button variant="hero" size="lg" asChild>
                 <Link to="/projects">Explore Projects <ArrowRight /></Link>
               </Button>
-              <Button variant="glass" size="lg" asChild>
+              <Button variant="outline" size="lg" asChild>
                 <a href="#demos"><PlayCircle /> Watch Demo</a>
               </Button>
             </div>
           </div>
-          <DashboardVisual />
+          <div className="blob relative overflow-hidden bg-surface p-8 sm:p-12 shadow-card">
+            <DashboardVisual />
+          </div>
         </div>
       </section>
 
