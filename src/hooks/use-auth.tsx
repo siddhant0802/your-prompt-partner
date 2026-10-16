@@ -55,7 +55,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [router, queryClient]);
 
   return (
-    <AuthContext.Provider value={{ ...state, signOut: async () => { await supabase.auth.signOut(); } }}>
+    <AuthContext.Provider
+      value={{
+        ...state,
+        signOut: async () => {
+          await queryClient.cancelQueries();
+          queryClient.clear();
+          await supabase.auth.signOut();
+          await router.navigate({ to: "/login", replace: true });
+        },
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
