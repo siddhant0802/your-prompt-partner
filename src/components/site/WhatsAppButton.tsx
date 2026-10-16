@@ -35,7 +35,7 @@ export function WhatsAppButton() {
   return (
     <div className="wa-root fixed right-5 z-50 flex flex-col items-end gap-2" style={{ bottom: "calc(5.75rem + env(safe-area-inset-bottom))", right: "calc(1.25rem + env(safe-area-inset-right))" }}>
       {bubble && (
-        <div className="wa-bubble relative mr-1 max-w-[14rem] rounded-2xl border border-border bg-card py-2.5 pl-3.5 pr-8 text-sm font-medium text-card-foreground shadow-card" role="status">
+        <div className="wa-bubble absolute bottom-1 right-[4.5rem] w-max max-w-[13rem] rounded-2xl border border-border bg-card py-2.5 pl-3.5 pr-8 text-sm font-medium text-card-foreground shadow-card" role="status">
           Need help with your project? 💬
           <button type="button" onClick={dismiss} aria-label="Dismiss message" className="absolute right-1.5 top-1.5 grid h-6 w-6 place-items-center rounded-full text-muted-foreground hover:bg-accent">
             <X className="h-3.5 w-3.5" />
