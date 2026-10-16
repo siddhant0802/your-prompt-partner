@@ -1,20 +1,21 @@
 import { useState } from "react";
 import { Brain, Code2, Network, ShieldCheck, Workflow, type LucideIcon } from "lucide-react";
-import type { Category, Project } from "@/lib/projects/types";
+import type { Project } from "@/lib/projects/types";
 import { cn } from "@/lib/utils";
 
-export const CATEGORY_ICON: Record<Category, LucideIcon> = {
-  "Computer Engineering": Code2,
-  "Information Technology": Network,
-  "AI/ML": Brain,
-  Cybersecurity: ShieldCheck,
-  "Software Engineering": Workflow,
+const ICONS: Record<string, LucideIcon> = {
+  "computer-engineering": Code2,
+  "information-technology": Network,
+  "ai-ml": Brain,
+  cybersecurity: ShieldCheck,
+  "software-engineering": Workflow,
 };
+export const categoryIcon = (slug: string): LucideIcon => ICONS[slug] ?? Code2;
 
 /** Shows the project image, or a generated code-styled preview when missing/broken. */
 export function ProjectThumbnail({ project, className }: { project: Project; className?: string }) {
   const [failed, setFailed] = useState(false);
-  const Icon = CATEGORY_ICON[project.category];
+  const Icon = categoryIcon(project.categorySlug);
   if (project.thumbnailUrl && !failed) {
     return (
       <img

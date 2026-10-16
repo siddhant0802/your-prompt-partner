@@ -10,6 +10,12 @@
 <!-- LOVABLE:END -->
 
 ## Architecture rules
-- Pages read projects only through `src/lib/projects/repository.ts`; sample rows live in `sample-data.ts` so the data source can be swapped for a database without touching pages.
+- Public pages read projects only through `src/lib/projects/repository.ts`, which calls server functions in `public.functions.ts` using a publishable-key client; only PUBLISHED rows are returned (RLS enforces this too) — keeps unpublished data off public pages.
+- Admin pages (`/admin/*`, `ssr: false`) use the browser client via `src/lib/admin/api.ts`; authorisation is enforced by RLS with `has_role(auth.uid(), 'admin')` on every table and storage bucket, never by hiding UI — the browser is untrusted.
+- Roles live only in `public.user_roles`; admins are granted manually in the database, never via signup or client input.
+- Prices are stored as integer paise (`price_paise`) and shown as whole INR — exact money, no floats.
+- Images go to private bucket `project-images` (anon-readable by policy, served via signed URLs because public buckets are blocked); paid deliverables go to private `project-deliverables`, admin-only, with metadata in `project_files`.
+- Publication rules (required fields, demo URL consistency, `published_at`) are enforced by a database trigger, mirrored in the admin form for friendly messages.
+- Audit rows for project creation, status/price changes and file add/remove are written by security-definer triggers into `audit_logs`.
 - Prices are display-only in the browser; checkout must re-read the price on the server and never trust URL or form values.
-- Unimplemented features (payments, accounts, downloads, admin) render `PlaceholderPage` and must never simulate success.
+- Unimplemented features (payments, downloads, purchases) render `PlaceholderPage` and must never simulate success.
