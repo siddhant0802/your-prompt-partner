@@ -34,7 +34,9 @@ export function AssistantWidget() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const abortRef = useRef<AbortController | null>(null);
 
-  useEffect(() => endRef.current?.scrollIntoView({ block: "end" }), [messages, busy, error]);
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ block: "end" });
+  }, [messages, busy, error]);
   useEffect(() => {
     if (open) inputRef.current?.focus();
   }, [open, busy]);

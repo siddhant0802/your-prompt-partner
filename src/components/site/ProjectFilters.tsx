@@ -37,7 +37,9 @@ export function ProjectFilters({ value, technologies, categories, onChange }: {
   onChange: (next: ProjectQuery) => void;
 }) {
   const [q, setQ] = useState(value.q ?? "");
-  useEffect(() => setQ(value.q ?? ""), [value.q]);
+  useEffect(() => {
+    setQ(value.q ?? "");
+  }, [value.q]);
   useEffect(() => {
     if ((value.q ?? "") === q) return;
     const t = setTimeout(() => onChange({ ...value, q: q || undefined }), 300);
