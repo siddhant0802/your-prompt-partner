@@ -8,3 +8,8 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+## Architecture rules
+- Pages read projects only through `src/lib/projects/repository.ts`; sample rows live in `sample-data.ts` so the data source can be swapped for a database without touching pages.
+- Prices are display-only in the browser; checkout must re-read the price on the server and never trust URL or form values.
+- Unimplemented features (payments, accounts, downloads, admin) render `PlaceholderPage` and must never simulate success.
