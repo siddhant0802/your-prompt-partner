@@ -1,5 +1,5 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { Bot, Loader2, MessageCircleQuestion, RotateCcw, Send, X } from "lucide-react";
+import { ArrowDownRight, Bot, Loader2, MessageCircleQuestion, RotateCcw, Send, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,8 @@ const SUGGESTIONS = [
 ];
 
 const MAX = 1000;
+const INVITE_SEEN = "tpw-ai-invite-seen";
+const INVITE_DISMISSED = "tpw-ai-invite-dismissed";
 
 export function AssistantWidget() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -40,6 +42,31 @@ export function AssistantWidget() {
   useEffect(() => {
     if (open) inputRef.current?.focus();
   }, [open, busy]);
+
+  const [invite, setInvite] = useState(false);
+  const [hover, setHover] = useState(false);
+  const [inviteDismissed, setInviteDismissed] = useState(true);
+
+  useEffect(() => {
+    // Read session storage after hydration only.
+    setInviteDismissed(sessionStorage.getItem(INVITE_DISMISSED) === "1");
+    if (pathname !== "/" || sessionStorage.getItem(INVITE_SEEN) === "1") return;
+    const show = window.setTimeout(() => {
+      sessionStorage.setItem(INVITE_SEEN, "1");
+      setInvite(true);
+    }, 2000);
+    const hide = window.setTimeout(() => setInvite(false), 9000);
+    return () => {
+      window.clearTimeout(show);
+      window.clearTimeout(hide);
+    };
+  }, [pathname]);
+
+  function dismissInvite() {
+    sessionStorage.setItem(INVITE_DISMISSED, "1");
+    setInviteDismissed(true);
+    setInvite(false);
+  }
 
   if (pathname.startsWith("/admin")) return null;
   const slugMatch = pathname.match(/^\/projects\/([a-z0-9-]+)$/);
