@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { SearchX } from "lucide-react";
+import { PackageOpen, SearchX } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { projectsQuery, technologiesQuery } from "@/lib/projects/repository";
+import { categoriesQuery, projectsQuery, technologiesQuery } from "@/lib/projects/repository";
 import type { ProjectQuery } from "@/lib/projects/types";
 import { ProjectCard } from "./ProjectCard";
 import { ProjectFilters } from "./ProjectFilters";
@@ -9,13 +9,22 @@ import { ProjectFilters } from "./ProjectFilters";
 export function Catalogue({ query, onChange }: { query: ProjectQuery; onChange: (q: ProjectQuery) => void }) {
   const { data: projects } = useSuspenseQuery(projectsQuery(query));
   const { data: technologies } = useSuspenseQuery(technologiesQuery());
+  const { data: categories } = useSuspenseQuery(categoriesQuery());
   return (
     <div className="mx-auto max-w-7xl space-y-8 px-4 py-10 sm:px-6">
-      <ProjectFilters value={query} technologies={technologies} onChange={onChange} />
+      <ProjectFilters value={query} technologies={technologies} categories={categories} onChange={onChange} />
       <p className="text-sm text-muted-foreground" aria-live="polite">
         {projects.length} {projects.length === 1 ? "project" : "projects"} found
       </p>
-      {projects.length === 0 ? (
+      {projects.length === 0 && !hasFilters(query) ? (
+        <div className="flex flex-col items-center rounded-2xl border border-dashed border-border px-6 py-16 text-center">
+          <PackageOpen className="h-10 w-10 text-muted-foreground" />
+          <h2 className="mt-4 text-xl font-semibold">No projects published yet</h2>
+          <p className="mt-2 max-w-md text-sm text-muted-foreground">
+            New software projects are being prepared. Please check back soon.
+          </p>
+        </div>
+      ) : projects.length === 0 ? (
         <div className="flex flex-col items-center rounded-2xl border border-dashed border-border px-6 py-16 text-center">
           <SearchX className="h-10 w-10 text-muted-foreground" />
           <h2 className="mt-4 text-xl font-semibold">No projects match your filters</h2>
@@ -54,4 +63,8 @@ export function CatalogueError({ onRetry }: { onRetry: () => void }) {
       <Button variant="hero" className="mt-6" onClick={onRetry}>Try again</Button>
     </div>
   );
+}
+
+function hasFilters(q: ProjectQuery) {
+  return Boolean(q.q || q.category || q.tech || q.complexity || q.maxPrice || q.demo);
 }

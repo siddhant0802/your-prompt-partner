@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CATEGORIES, COMPLEXITIES, type ProjectQuery, type SortKey } from "@/lib/projects/types";
+import { COMPLEXITIES, type CategoryInfo, type ProjectQuery, type SortKey } from "@/lib/projects/types";
 
 const PRICES = [
   { label: "Any price", value: "" },
@@ -30,8 +30,9 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
   );
 }
 
-export function ProjectFilters({ value, technologies, onChange }: {
+export function ProjectFilters({ value, technologies, categories, onChange }: {
   value: ProjectQuery;
+  categories: CategoryInfo[];
   technologies: string[];
   onChange: (next: ProjectQuery) => void;
 }) {
@@ -61,9 +62,9 @@ export function ProjectFilters({ value, technologies, onChange }: {
       </div>
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
         <Field label="Category">
-          <select className={selectCls} value={value.category ?? ""} onChange={(e) => set("category", (CATEGORIES.find((c) => c === e.target.value)))}>
+          <select className={selectCls} value={value.category ?? ""} onChange={(e) => set("category", e.target.value || undefined)}>
             <option value="">All categories</option>
-            {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
+            {categories.map((c) => <option key={c.slug} value={c.slug}>{c.name}</option>)}
           </select>
         </Field>
         <Field label="Technology">

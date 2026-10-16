@@ -1,7 +1,7 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { Catalogue, CatalogueError, CatalogueSkeleton } from "@/components/site/Catalogue";
 import { PageHeader } from "@/components/site/PageHeader";
-import { projectsQuery, technologiesQuery } from "@/lib/projects/repository";
+import { categoriesQuery, projectsQuery, technologiesQuery } from "@/lib/projects/repository";
 import { parseProjectSearch } from "@/lib/projects/search-params";
 
 export const Route = createFileRoute("/projects/")({
@@ -11,6 +11,7 @@ export const Route = createFileRoute("/projects/")({
     await Promise.all([
       context.queryClient.ensureQueryData(projectsQuery(deps)),
       context.queryClient.ensureQueryData(technologiesQuery()),
+      context.queryClient.ensureQueryData(categoriesQuery()),
     ]);
   },
   head: () => ({
