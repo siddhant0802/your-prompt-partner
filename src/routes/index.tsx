@@ -131,8 +131,8 @@ function Home() {
             return (
               <Link key={c} to="/projects" search={{ category: c }} className="group rounded-2xl glass p-5 card-hover">
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand"><Icon className="h-5 w-5 text-primary-foreground" /></span>
-                <h3 className="mt-4 font-semibold">{c}</h3>
-                <p className="mt-1 text-xs text-muted-foreground">{counts[c]} {counts[c] === 1 ? "listing" : "listings"}</p>
+                <h3 className="mt-4 font-semibold">{cat.name}</h3>
+                <p className="mt-1 text-xs text-muted-foreground">{counts[c] ?? 0} {counts[c] === 1 ? "project" : "projects"}</p>
               </Link>
             );
           })}

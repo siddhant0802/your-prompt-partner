@@ -15,8 +15,8 @@ export const Route = createFileRoute("/projects/$slug")({
   loader: async ({ context, params }) => {
     const project = await context.queryClient.ensureQueryData(projectQuery(params.slug));
     if (!project) throw notFound();
-    await context.queryClient.ensureQueryData(projectsQuery({ category: project.category }));
-    return { title: project.title, summary: project.summary };
+    await context.queryClient.ensureQueryData(projectsQuery({ category: project.categorySlug }));
+    return { title: project.seoTitle || project.title, summary: project.seoDescription || project.summary };
   },
   head: ({ params, loaderData }) => {
     const title = loaderData ? `${loaderData.title} — TheProjectWork` : "Project unavailable — TheProjectWork";
@@ -77,11 +77,12 @@ function ProjectDetail() {
   const { slug } = Route.useParams();
   const { data } = useSuspenseQuery(projectQuery(slug));
   const project = data!;
-  const { data: sameCategory } = useSuspenseQuery(projectsQuery({ category: project.category }));
+  const { data: sameCategory } = useSuspenseQuery(projectsQuery({ category: project.categorySlug }));
   const related = sameCategory.filter((p) => p.slug !== project.slug).slice(0, 3);
   const docs = [
     project.includesDocumentation && { icon: FileText, label: "Project documentation" },
     project.includesPpt && { icon: Presentation, label: "Presentation (PPT)" },
+    project.includesInstallationGuide && { icon: Terminal, label: "Installation guide" },
   ].filter((x): x is { icon: typeof FileText; label: string } => Boolean(x));
 
   return (
@@ -109,7 +110,9 @@ function ProjectDetail() {
             </div>
 
             <div className="aspect-video overflow-hidden rounded-2xl border border-border">
-              {project.demo.videoUrl ? (
+              {project.demo.videoUrl && embedUrl(project.demo.videoUrl) ? (
+                <iframe src={embedUrl(project.demo.videoUrl)!} title={`${project.title} demo video`} allow="accelerometer; encrypted-media; picture-in-picture" allowFullScreen className="h-full w-full bg-surface" />
+              ) : project.demo.videoUrl ? (
                 <video src={project.demo.videoUrl} controls className="h-full w-full bg-surface" />
               ) : (
                 <ProjectThumbnail project={project} />
@@ -127,6 +130,7 @@ function ProjectDetail() {
               </div>
             )}
 
+            {project.problemStatement && <Section icon={BookOpen} title="Problem statement"><p className="text-sm leading-relaxed text-muted-foreground">{project.problemStatement}</p></Section>}
             {project.features.length > 0 && <Section icon={Check} title="Features"><List items={project.features} /></Section>}
             {project.workflow.length > 0 && <Section icon={Workflow} title="How it works"><List items={project.workflow} ordered /></Section>}
             <div className="grid gap-8 md:grid-cols-2">
@@ -136,6 +140,7 @@ function ProjectDetail() {
             {project.packageContents.length > 0 && <Section icon={Package} title="Package contents"><List items={project.packageContents} /></Section>}
             {docs.length > 0 && (
               <Section icon={BookOpen} title="Documentation">
+                {project.documentationDescription && <p className="mb-4 text-sm text-muted-foreground">{project.documentationDescription}</p>}
                 <ul className="flex flex-wrap gap-3">
                   {docs.map((d) => (
                     <li key={d.label} className="flex items-center gap-2 rounded-lg border border-border bg-surface px-3 py-2 text-sm">
@@ -165,6 +170,9 @@ function ProjectDetail() {
               <div>
                 <p className="text-sm text-muted-foreground">Price</p>
                 <p className="font-display text-4xl font-bold">{formatInr(project.priceInr)}</p>
+                {project.originalPriceInr && project.originalPriceInr > project.priceInr && (
+                  <p className="text-sm text-muted-foreground line-through">{formatInr(project.originalPriceInr)}</p>
+                )}
               </div>
               <Button variant="hero" size="lg" className="w-full" asChild>
                 <Link to="/checkout" search={{ project: project.slug }}><ShoppingCart /> Buy Project</Link>
@@ -176,7 +184,7 @@ function ProjectDetail() {
               )}
               {!project.demo.liveUrl && !project.demo.videoUrl && (
                 <p className="rounded-lg border border-border bg-surface p-3 text-xs text-muted-foreground">
-                  A demo has not been added for this project yet.
+                  {project.demoTemporarilyUnavailable ? "The demo for this project is temporarily unavailable." : "A demo has not been added for this project yet."}
                 </p>
               )}
               {project.isSample && (
@@ -197,4 +205,21 @@ function ProjectDetail() {
       </div>
     </div>
   );
+}
+
+/** YouTube/Vimeo links become embeds; direct video files return null and play in <video>. */
+function embedUrl(url: string): string | null {
+  try {
+    const u = new URL(url);
+    const host = u.hostname.replace(/^www\./, "");
+    if (host === "youtu.be") return `https://www.youtube-nocookie.com/embed/${u.pathname.slice(1)}`;
+    if (host.endsWith("youtube.com")) {
+      const id = u.searchParams.get("v") ?? u.pathname.split("/").filter(Boolean).pop();
+      return id ? `https://www.youtube-nocookie.com/embed/${id}` : null;
+    }
+    if (host === "vimeo.com") return `https://player.vimeo.com/video/${u.pathname.split("/").filter(Boolean)[0]}`;
+    return null;
+  } catch {
+    return null;
+  }
 }

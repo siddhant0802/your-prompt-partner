@@ -57,7 +57,7 @@ export function Footer() {
       </div>
       <div className="border-t border-border">
         <p className="mx-auto max-w-7xl px-4 py-6 text-xs text-muted-foreground sm:px-6">
-          © {new Date().getFullYear()} TheProjectWork. Listings currently shown are development samples.
+          © {new Date().getFullYear()} TheProjectWork.
         </p>
       </div>
     </footer>
