@@ -68,7 +68,6 @@ function LoginPage() {
   }
 
   async function google() {
-    if (next) sessionStorage.setItem("auth-next", next);
     const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: `${window.location.origin}/login${next ? `?next=${encodeURIComponent(next)}` : ""}` });
     if (result.error) toast.error("Google sign-in failed. Please try again.");
   }

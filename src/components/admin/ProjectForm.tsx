@@ -281,10 +281,10 @@ function ImagesCard({ project }: { project: ProjectRow }) {
       const uploaded: string[] = [];
       for (const file of Array.from(files)) uploaded.push(await uploadImage(project.id, file));
       if (kind === "thumb") {
-        await saveProject({ ...project, thumbnail_path: uploaded[0]! } as ProjectInsert, project.id);
+        await saveProject({ thumbnail_path: uploaded[0]! } as ProjectInsert, project.id);
         if (project.thumbnail_path) await removeImage(project.thumbnail_path).catch(() => {});
       } else {
-        await saveProject({ ...project, gallery_paths: [...project.gallery_paths, ...uploaded] } as ProjectInsert, project.id);
+        await saveProject({ gallery_paths: [...project.gallery_paths, ...uploaded] } as ProjectInsert, project.id);
       }
       toast.success(kind === "thumb" ? "Thumbnail uploaded" : `${uploaded.length} screenshot(s) uploaded`);
       refresh();
@@ -298,8 +298,8 @@ function ImagesCard({ project }: { project: ProjectRow }) {
   async function remove(path: string) {
     try {
       const next = path === project.thumbnail_path
-        ? { ...project, thumbnail_path: null }
-        : { ...project, gallery_paths: project.gallery_paths.filter((p) => p !== path) };
+        ? { thumbnail_path: null }
+        : { gallery_paths: project.gallery_paths.filter((p) => p !== path) };
       await saveProject(next as ProjectInsert, project.id);
       await removeImage(path);
       toast.success("Image removed");
