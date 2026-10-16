@@ -175,7 +175,7 @@ export function AssistantWidget() {
               </Button>
             </div>
             <p className="mt-2 text-[11px] leading-snug text-muted-foreground">
-              AI assistant. Don't share passwords or payment details. Chats aren't saved and clear when you close this tab. <Link to="/privacy" className="underline">Privacy</Link>
+              AI assistant. Don't share passwords or payment details. Chats aren't saved and clear when you refresh or leave the site. <Link to="/privacy" className="underline">Privacy</Link>
             </p>
           </form>
         </section>

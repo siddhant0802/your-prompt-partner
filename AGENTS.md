@@ -23,3 +23,4 @@
 - Paid downloads are issued only by `getDownloadLink` server fn: own PAID order + file in that project's package → 2-minute signed URL, logged in `download_logs`.
 - Razorpay webhook (`/api/public/razorpay-webhook`) dedupes on the gateway event id in `payment_events`; live keys are refused unless `RAZORPAY_ALLOW_LIVE=true` (owner approval).
 - Storage buckets carry size limits and the image bucket only accepts image extensions (policy), so client-side checks are not the only guard.
+- The AI assistant (`/api/public/assistant`) answers only from published projects + FAQ retrieved per request (`src/lib/assistant/knowledge.server.ts`); it has no tools or write access, stores no conversation text, and rate-limits via `assistant_take_quota` with hashed visitor IDs — keeps it read-only and cheap. Settings live in the single-row `assistant_settings` table (admin-only RLS).
