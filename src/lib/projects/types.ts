@@ -55,11 +55,11 @@ export const hasDemo = (p: Project) => Boolean(p.demo.videoUrl || p.demo.liveUrl
 export type SortKey = "relevance" | "price-asc" | "price-desc" | "name-asc" | "name-desc";
 
 export interface ProjectQuery {
-  q?: string;
-  category?: Category;
-  tech?: string;
-  complexity?: Complexity;
-  maxPrice?: number;
-  demo?: boolean;
-  sort?: SortKey;
+  q?: string | undefined;
+  category?: Category | undefined;
+  tech?: string | undefined;
+  complexity?: Complexity | undefined;
+  maxPrice?: number | undefined;
+  demo?: boolean | undefined;
+  sort?: SortKey | undefined;
 }

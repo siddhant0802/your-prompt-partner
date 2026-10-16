@@ -57,8 +57,8 @@ function ContactPage() {
           ))}
           <div className="space-y-2">
             <Label htmlFor="message">Message</Label>
-            <Textarea id="message" name="message" rows={5} aria-invalid={Boolean(errors.message)} />
-            {errors.message && <p className="text-xs text-destructive">{errors.message}</p>}
+            <Textarea id="message" name="message" rows={5} aria-invalid={Boolean(errors["message"])} />
+            {errors["message"] && <p className="text-xs text-destructive">{errors["message"]}</p>}
           </div>
           <Button type="submit" variant="hero" className="w-full"><Send /> Send message</Button>
           {checked && (

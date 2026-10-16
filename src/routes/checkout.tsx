@@ -8,7 +8,7 @@ import { pageHead } from "@/lib/seo";
 export const Route = createFileRoute("/checkout")({
   // Only the project slug comes from the URL; price is always looked up from data, never from the browser.
   validateSearch: (s: Record<string, unknown>) => ({
-    project: typeof s.project === "string" ? s.project.slice(0, 120) : undefined,
+    project: typeof s["project"] === "string" ? s["project"].slice(0, 120) : undefined,
   }),
   head: () => pageHead("Checkout", "Secure checkout for software projects.", "/checkout", { noindex: true }),
   component: CheckoutPage,
