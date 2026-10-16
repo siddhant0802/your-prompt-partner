@@ -239,3 +239,33 @@
 @media (prefers-reduced-motion: reduce) {
   .ai-pulse, .ai-ring, .ai-nudge { animation: none !important; }
 }
+
+/* Header micro-interactions */
+@keyframes header-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes logo-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+@utility header-enter { animation: header-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@utility logo-enter { animation: logo-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both; }
+@utility nav-underline {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    bottom: 0.3rem;
+    height: 1.5px;
+    border-radius: 9999px;
+    background: var(--color-violet);
+    transition: left 0.22s cubic-bezier(0.22, 1, 0.36, 1), right 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  &:hover::after, &:focus-visible::after, &[data-status="active"]::after { left: 0.75rem; right: 0.75rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .header-enter, .logo-enter { animation: none !important; }
+}
