@@ -28,6 +28,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SupportPolicyRouteImport } from './routes/support-policy'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminAssistantRouteImport } from './routes/admin.assistant'
 import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
 import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
@@ -133,6 +134,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminAssistantRoute = AdminAssistantRouteImport.update({
+  id: '/assistant',
+  path: '/assistant',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
   id: '/categories',
   path: '/categories',
@@ -199,6 +205,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/support-policy': typeof SupportPolicyRoute
   '/terms': typeof TermsRoute
+  '/admin/assistant': typeof AdminAssistantRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -228,6 +235,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/support-policy': typeof SupportPolicyRoute
   '/terms': typeof TermsRoute
+  '/admin/assistant': typeof AdminAssistantRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -259,6 +267,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/support-policy': typeof SupportPolicyRoute
   '/terms': typeof TermsRoute
+  '/admin/assistant': typeof AdminAssistantRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -291,6 +300,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/support-policy'
     | '/terms'
+    | '/admin/assistant'
     | '/admin/categories'
     | '/admin/orders'
     | '/projects/$slug'
@@ -320,6 +330,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/support-policy'
     | '/terms'
+    | '/admin/assistant'
     | '/admin/categories'
     | '/admin/orders'
     | '/projects/$slug'
@@ -350,6 +361,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/support-policy'
     | '/terms'
+    | '/admin/assistant'
     | '/admin/categories'
     | '/admin/orders'
     | '/projects/$slug'
@@ -522,6 +534,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/assistant': {
+      id: '/admin/assistant'
+      path: '/assistant'
+      fullPath: '/admin/assistant'
+      preLoaderRoute: typeof AdminAssistantRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/categories': {
       id: '/admin/categories'
       path: '/categories'
@@ -589,6 +608,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminAssistantRoute: typeof AdminAssistantRoute
   AdminCategoriesRoute: typeof AdminCategoriesRoute
   AdminOrdersRoute: typeof AdminOrdersRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -598,6 +618,7 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminAssistantRoute: AdminAssistantRoute,
   AdminCategoriesRoute: AdminCategoriesRoute,
   AdminOrdersRoute: AdminOrdersRoute,
   AdminIndexRoute: AdminIndexRoute,
