@@ -1,5 +1,5 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
-import { FolderKanban, LayoutDashboard, Loader2, LogOut, ShieldAlert, Tags } from "lucide-react";
+import { FolderKanban, LayoutDashboard, Loader2, LogOut, Receipt, ShieldAlert, Tags } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { pageHead } from "@/lib/seo";
@@ -14,6 +14,7 @@ const NAV = [
   { to: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
   { to: "/admin/projects", label: "Projects", icon: FolderKanban, exact: false },
   { to: "/admin/categories", label: "Categories", icon: Tags, exact: false },
+  { to: "/admin/orders", label: "Orders", icon: Receipt, exact: false },
 ] as const;
 
 function AdminLayout() {
