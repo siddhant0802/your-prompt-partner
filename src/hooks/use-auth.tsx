@@ -40,8 +40,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     supabase.auth.getSession().then(({ data }) => apply(data.session));
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
       if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
-      void apply(session);
-      router.invalidate();
+      // Defer: calling the backend inside this callback can deadlock the auth lock,
+      // which leaves "Sign in" spinning forever.
+      setTimeout(() => {
+        void apply(session);
+        router.invalidate();
+      }, 0);
       if (event === "SIGNED_OUT") queryClient.removeQueries({ queryKey: ["admin"] });
     });
     return () => {
