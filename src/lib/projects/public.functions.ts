@@ -48,7 +48,9 @@ const LEVELS: Record<string, Project["levels"]> = {
 };
 
 function toProject(r: Row, images: Map<string, string>): Project {
-  const video = r.demo_status === "VIDEO_AVAILABLE" ? r.demo_video_url ?? undefined : undefined;
+  // Any valid YouTube link shows the video, unless the demo is marked temporarily unavailable.
+  const video =
+    r.demo_status !== "TEMPORARILY_UNAVAILABLE" && youtubeVideoId(r.demo_video_url) ? r.demo_video_url ?? undefined : undefined;
   const live = r.demo_status === "LIVE_DEMO_AVAILABLE" ? r.live_demo_url ?? undefined : undefined;
   return {
     slug: r.slug,
