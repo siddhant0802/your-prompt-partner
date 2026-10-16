@@ -2,9 +2,8 @@ import { useLocation } from "@tanstack/react-router";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 
-const PHONE = "919225311998";
-const MESSAGE = "Hi! I visited TheProjectWork website and need help with a software project. Please share the details.";
-export const WHATSAPP_URL = `https://wa.me/${PHONE}?text=${encodeURIComponent(MESSAGE)}`;
+export const WHATSAPP_URL =
+  "https://wa.me/919225311998?text=Hi%21%20I%20visited%20TheProjectWork%20website%20and%20need%20help%20with%20a%20software%20project.%20Please%20share%20the%20details.";
 const SEEN_KEY = "tpw-wa-bubble-seen";
 
 function WhatsAppIcon({ className }: { className?: string }) {
