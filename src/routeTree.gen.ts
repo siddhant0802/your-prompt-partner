@@ -24,6 +24,7 @@ import { Route as PurchasesRouteImport } from './routes/purchases'
 import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SupportPolicyRouteImport } from './routes/support-policy'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
@@ -111,6 +112,11 @@ const SearchRoute = SearchRouteImport.update({
   path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SupportPolicyRoute = SupportPolicyRouteImport.update({
   id: '/support-policy',
   path: '/support-policy',
@@ -184,6 +190,7 @@ export interface FileRoutesByFullPath {
   '/refund-policy': typeof RefundPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/support-policy': typeof SupportPolicyRoute
   '/terms': typeof TermsRoute
   '/admin/categories': typeof AdminCategoriesRoute
@@ -211,6 +218,7 @@ export interface FileRoutesByTo {
   '/refund-policy': typeof RefundPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/support-policy': typeof SupportPolicyRoute
   '/terms': typeof TermsRoute
   '/admin/categories': typeof AdminCategoriesRoute
@@ -240,6 +248,7 @@ export interface FileRoutesById {
   '/refund-policy': typeof RefundPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/support-policy': typeof SupportPolicyRoute
   '/terms': typeof TermsRoute
   '/admin/categories': typeof AdminCategoriesRoute
@@ -270,6 +279,7 @@ export interface FileRouteTypes {
     | '/refund-policy'
     | '/reset-password'
     | '/search'
+    | '/sitemap.xml'
     | '/support-policy'
     | '/terms'
     | '/admin/categories'
@@ -297,6 +307,7 @@ export interface FileRouteTypes {
     | '/refund-policy'
     | '/reset-password'
     | '/search'
+    | '/sitemap.xml'
     | '/support-policy'
     | '/terms'
     | '/admin/categories'
@@ -325,6 +336,7 @@ export interface FileRouteTypes {
     | '/refund-policy'
     | '/reset-password'
     | '/search'
+    | '/sitemap.xml'
     | '/support-policy'
     | '/terms'
     | '/admin/categories'
@@ -354,6 +366,7 @@ export interface RootRouteChildren {
   RefundPolicyRoute: typeof RefundPolicyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SearchRoute: typeof SearchRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SupportPolicyRoute: typeof SupportPolicyRoute
   TermsRoute: typeof TermsRoute
   ProjectsSlugRoute: typeof ProjectsSlugRoute
@@ -466,6 +479,13 @@ declare module '@tanstack/react-router' {
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/support-policy': {
@@ -584,6 +604,7 @@ const rootRouteChildren: RootRouteChildren = {
   RefundPolicyRoute: RefundPolicyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SearchRoute: SearchRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   SupportPolicyRoute: SupportPolicyRoute,
   TermsRoute: TermsRoute,
   ProjectsSlugRoute: ProjectsSlugRoute,
