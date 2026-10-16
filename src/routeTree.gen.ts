@@ -25,6 +25,7 @@ import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as SupportPolicyRouteImport } from './routes/support-policy'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
 import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
 
@@ -108,6 +109,11 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
   id: '/projects/',
   path: '/projects/',
@@ -122,7 +128,7 @@ const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/delivery-policy': typeof DeliveryPolicyRoute
@@ -137,12 +143,12 @@ export interface FileRoutesByFullPath {
   '/support-policy': typeof SupportPolicyRoute
   '/terms': typeof TermsRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/projects/': typeof ProjectsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/delivery-policy': typeof DeliveryPolicyRoute
@@ -157,13 +163,14 @@ export interface FileRoutesByTo {
   '/support-policy': typeof SupportPolicyRoute
   '/terms': typeof TermsRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/admin': typeof AdminIndexRoute
   '/projects': typeof ProjectsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/delivery-policy': typeof DeliveryPolicyRoute
@@ -178,6 +185,7 @@ export interface FileRoutesById {
   '/support-policy': typeof SupportPolicyRoute
   '/terms': typeof TermsRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/projects/': typeof ProjectsIndexRoute
 }
 export interface FileRouteTypes {
@@ -200,12 +208,12 @@ export interface FileRouteTypes {
     | '/support-policy'
     | '/terms'
     | '/projects/$slug'
+    | '/admin/'
     | '/projects/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
-    | '/admin'
     | '/checkout'
     | '/contact'
     | '/delivery-policy'
@@ -220,6 +228,7 @@ export interface FileRouteTypes {
     | '/support-policy'
     | '/terms'
     | '/projects/$slug'
+    | '/admin'
     | '/projects'
   id:
     | '__root__'
@@ -240,13 +249,14 @@ export interface FileRouteTypes {
     | '/support-policy'
     | '/terms'
     | '/projects/$slug'
+    | '/admin/'
     | '/projects/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   CheckoutRoute: typeof CheckoutRoute
   ContactRoute: typeof ContactRoute
   DeliveryPolicyRoute: typeof DeliveryPolicyRoute
@@ -378,6 +388,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/projects/': {
       id: '/projects/'
       path: '/projects'
@@ -395,10 +412,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   CheckoutRoute: CheckoutRoute,
   ContactRoute: ContactRoute,
   DeliveryPolicyRoute: DeliveryPolicyRoute,
