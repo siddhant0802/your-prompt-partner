@@ -8,13 +8,17 @@ import { Button } from "@/components/ui/button";
 import { Eyebrow } from "@/components/site/Badges";
 import heroImage from "@/assets/hero-workspace.png.asset.json";
 import { ProjectCard } from "@/components/site/ProjectCard";
-import { CATEGORY_ICON } from "@/components/site/ProjectThumbnail";
-import { projectsQuery } from "@/lib/projects/repository";
-import { CATEGORIES } from "@/lib/projects/types";
+import { categoryIcon } from "@/components/site/ProjectThumbnail";
+import { categoriesQuery, projectsQuery } from "@/lib/projects/repository";
 import { GENERAL_FAQS } from "@/lib/site-content";
 
 export const Route = createFileRoute("/")({
-  loader: ({ context }) => context.queryClient.ensureQueryData(projectsQuery()).then(() => undefined),
+  loader: async ({ context }) => {
+    await Promise.all([
+      context.queryClient.ensureQueryData(projectsQuery()),
+      context.queryClient.ensureQueryData(categoriesQuery()),
+    ]);
+  },
   head: () => ({
     meta: [
       { title: "TheProjectWork — Software Projects for Engineering Students" },
@@ -45,8 +49,10 @@ const BENEFITS = [
 
 function Home() {
   const { data: projects } = useSuspenseQuery(projectsQuery());
-  const featured = projects.filter((p) => p.featured).slice(0, 3);
-  const counts = Object.fromEntries(CATEGORIES.map((c) => [c, projects.filter((p) => p.category === c).length]));
+  const { data: categories } = useSuspenseQuery(categoriesQuery());
+  const flagged = projects.filter((p) => p.featured);
+  const featured = (flagged.length ? flagged : projects).slice(0, 3);
+  const counts = Object.fromEntries(categories.map((c) => [c.slug, projects.filter((p) => p.categorySlug === c.slug).length]));
 
   return (
     <>
@@ -101,11 +107,17 @@ function Home() {
       {/* Featured */}
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <SectionTitle eyebrow="Featured" title="Featured projects" note="Currently showing development sample listings." />
+          <SectionTitle eyebrow="Featured" title="Featured projects" />
           <Button variant="ghost" asChild><Link to="/projects">View all <ArrowRight /></Link></Button>
         </div>
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {featured.map((p) => <ProjectCard key={p.slug} project={p} />)}
+          {featured.length === 0 && (
+            <div className="col-span-full rounded-2xl border border-dashed border-border px-6 py-14 text-center">
+              <h3 className="text-lg font-semibold">No projects published yet</h3>
+              <p className="mt-2 text-sm text-muted-foreground">New software projects are being prepared. Please check back soon.</p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -113,8 +125,9 @@ function Home() {
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
         <SectionTitle eyebrow="Categories" title="Browse by discipline" />
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {CATEGORIES.map((c) => {
-            const Icon = CATEGORY_ICON[c];
+          {categories.map((cat) => {
+            const c = cat.slug;
+            const Icon = categoryIcon(c);
             return (
               <Link key={c} to="/projects" search={{ category: c }} className="group rounded-2xl glass p-5 card-hover">
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand"><Icon className="h-5 w-5 text-primary-foreground" /></span>
