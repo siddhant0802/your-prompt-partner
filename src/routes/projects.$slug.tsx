@@ -1,3 +1,4 @@
+import { youtubeEmbedUrl } from "@/lib/youtube";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import {
@@ -109,15 +110,26 @@ function ProjectDetail() {
               <div className="flex flex-wrap gap-1.5">{project.technologies.map((t) => <TechChip key={t}>{t}</TechChip>)}</div>
             </div>
 
-            <div className="aspect-video overflow-hidden rounded-2xl border border-border">
-              {project.demo.videoUrl && embedUrl(project.demo.videoUrl) ? (
-                <iframe src={embedUrl(project.demo.videoUrl)!} title={`${project.title} demo video`} allow="accelerometer; encrypted-media; picture-in-picture" allowFullScreen className="h-full w-full bg-surface" />
-              ) : project.demo.videoUrl ? (
-                <video src={project.demo.videoUrl} controls className="h-full w-full bg-surface" />
-              ) : (
+            {youtubeEmbedUrl(project.demo.videoUrl) ? (
+              <section aria-label="Demo video" className="space-y-3">
+                <h2 className="text-xl font-semibold">Demo video</h2>
+                <div className="aspect-video overflow-hidden rounded-2xl border border-border bg-surface">
+                  <iframe
+                    src={youtubeEmbedUrl(project.demo.videoUrl)!}
+                    title={`${project.title} demo video`}
+                    loading="lazy"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="h-full w-full"
+                  />
+                </div>
+              </section>
+            ) : (
+              <div className="aspect-video overflow-hidden rounded-2xl border border-border">
                 <ProjectThumbnail project={project} />
-              )}
-            </div>
+              </div>
+            )}
 
             {project.screenshots.length > 0 && (
               <div className="grid gap-4 sm:grid-cols-2">
@@ -207,19 +219,3 @@ function ProjectDetail() {
   );
 }
 
-/** YouTube/Vimeo links become embeds; direct video files return null and play in <video>. */
-function embedUrl(url: string): string | null {
-  try {
-    const u = new URL(url);
-    const host = u.hostname.replace(/^www\./, "");
-    if (host === "youtu.be") return `https://www.youtube-nocookie.com/embed/${u.pathname.slice(1)}`;
-    if (host.endsWith("youtube.com")) {
-      const id = u.searchParams.get("v") ?? u.pathname.split("/").filter(Boolean).pop();
-      return id ? `https://www.youtube-nocookie.com/embed/${id}` : null;
-    }
-    if (host === "vimeo.com") return `https://player.vimeo.com/video/${u.pathname.split("/").filter(Boolean)[0]}`;
-    return null;
-  } catch {
-    return null;
-  }
-}

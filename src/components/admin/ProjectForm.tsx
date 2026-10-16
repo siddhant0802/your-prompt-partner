@@ -1,3 +1,4 @@
+import { youtubeVideoId } from "@/lib/youtube";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, Download, ImagePlus, Loader2, Lock, Save, Trash2, Upload } from "lucide-react";
@@ -53,9 +54,9 @@ function validate(f: FormState) {
     const op = Number(f.original_price);
     if (!Number.isInteger(op) || op <= price) e["original_price"] = "Original price must be a whole amount above the price.";
   }
-  if (f.demo_video_url && !isUrl(f.demo_video_url)) e["demo_video_url"] = "Enter a full link starting with https://";
+  if (f.demo_video_url.trim() && !youtubeVideoId(f.demo_video_url)) e["demo_video_url"] = "Enter a YouTube watch, youtu.be or Shorts link.";
   if (f.live_demo_url && !isUrl(f.live_demo_url)) e["live_demo_url"] = "Enter a full link starting with https://";
-  if (f.demo_status === "VIDEO_AVAILABLE" && !f.demo_video_url) e["demo_video_url"] = "Add the video link, or change the demo status.";
+  if (f.demo_status === "VIDEO_AVAILABLE" && !f.demo_video_url.trim()) e["demo_video_url"] = "Add the video link, or change the demo status.";
   if (f.demo_status === "LIVE_DEMO_AVAILABLE" && !f.live_demo_url) e["live_demo_url"] = "Add the live demo link, or change the demo status.";
   if (f.seo_title.length > 70) e["seo_title"] = "Keep the SEO title to 70 characters.";
   if (f.seo_description.length > 170) e["seo_description"] = "Keep the SEO description to 170 characters.";
@@ -205,7 +206,7 @@ export function ProjectForm({ project }: { project?: ProjectRow }) {
                 <option value="TEMPORARILY_UNAVAILABLE">Temporarily unavailable</option>
               </select>
             </Field>
-            {text("demo_video_url", "Demo video link", { hint: "YouTube, Vimeo or a direct video file link." })}
+            {text("demo_video_url", "YouTube Demo Video URL (optional)", { hint: "Watch, youtu.be or Shorts link. Leave empty to hide the video." })}
             {text("live_demo_url", "Live demo link (optional)")}
           </Card>
 
