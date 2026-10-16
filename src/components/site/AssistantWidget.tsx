@@ -93,15 +93,38 @@ export function AssistantWidget() {
     void send(next);
   }
 
+  const bubbleVisible = !open && !inviteDismissed && (invite || hover);
+
   return (
     <>
+      {bubbleVisible && (
+        <div className="fixed bottom-[5.5rem] right-5 z-50 flex max-w-[16rem] flex-col items-end" role="status">
+          <div className="ai-pop-in relative rounded-2xl rounded-br-sm border border-border bg-card py-2.5 pl-3.5 pr-8 text-sm font-medium text-foreground shadow-card">
+            {hover && !invite ? "Ask your doubt!" : "Hey! 👋 Have a project doubt? Ask me anything!"}
+            <button
+              type="button"
+              onClick={dismissInvite}
+              aria-label="Dismiss invitation"
+              className="absolute right-1.5 top-1.5 grid h-6 w-6 place-items-center rounded-full text-muted-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          </div>
+          {invite && <ArrowDownRight aria-hidden className="ai-nudge mr-6 mt-1 h-5 w-5 text-muted-foreground" />}
+        </div>
+      )}
       {!open && (
         <button
           type="button"
-          onClick={() => setOpen(true)}
+          onClick={() => { setOpen(true); setInvite(false); }}
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+          onFocus={() => setHover(true)}
+          onBlur={() => setHover(false)}
           aria-label="Open TheProjectWork AI Assistant"
-          className="fixed bottom-5 right-5 z-50 inline-flex h-14 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-card transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className="ai-pulse fixed bottom-5 right-5 z-50 inline-flex h-14 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-card transition-transform duration-200 hover:!scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
+          <span aria-hidden className="ai-ring pointer-events-none absolute inset-0 rounded-full border-2 border-primary" />
           <MessageCircleQuestion className="h-5 w-5" /> <span className="hidden sm:inline">Ask AI</span>
         </button>
       )}
@@ -109,7 +132,7 @@ export function AssistantWidget() {
         <section
           role="dialog"
           aria-label="TheProjectWork AI Assistant"
-          className="fixed inset-x-2 bottom-2 z-50 flex h-[min(620px,calc(100dvh-1rem))] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card sm:inset-x-auto sm:bottom-5 sm:right-5 sm:w-[400px]"
+          className="ai-slide-up fixed inset-x-2 bottom-2 z-50 flex h-[min(620px,calc(100dvh-1rem))] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card sm:inset-x-auto sm:bottom-5 sm:right-5 sm:w-[400px]"
         >
           <header className="flex items-center gap-3 border-b border-border px-4 py-3">
             <div className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground"><Bot className="h-5 w-5" /></div>
