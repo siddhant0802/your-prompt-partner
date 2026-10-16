@@ -266,7 +266,7 @@ function ImagesCard({ project }: { project: ProjectRow }) {
   const [busy, setBusy] = useState<string | null>(null);
   const paths = [project.thumbnail_path, ...project.gallery_paths].filter((p): p is string => Boolean(p));
   const [urls, setUrls] = useState<Record<string, string>>({});
-  useEffect(() => { imagePreviewUrls(paths).then(setUrls).catch(() => setUrls({})); }, [paths.join("|")]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { imagePreviewUrls(paths).then((u) => setUrls(u)).catch(() => setUrls({})); }, [paths.join("|")]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const refresh = () => {
     qc.invalidateQueries({ queryKey: ["admin"] });
@@ -281,10 +281,10 @@ function ImagesCard({ project }: { project: ProjectRow }) {
       const uploaded: string[] = [];
       for (const file of Array.from(files)) uploaded.push(await uploadImage(project.id, file));
       if (kind === "thumb") {
-        await saveProject({ thumbnail_path: uploaded[0]! } as ProjectInsert, project.id);
+        await saveProject({ thumbnail_path: uploaded[0]! } as Partial<ProjectInsert>, project.id);
         if (project.thumbnail_path) await removeImage(project.thumbnail_path).catch(() => {});
       } else {
-        await saveProject({ gallery_paths: [...project.gallery_paths, ...uploaded] } as ProjectInsert, project.id);
+        await saveProject({ gallery_paths: [...project.gallery_paths, ...uploaded] } as Partial<ProjectInsert>, project.id);
       }
       toast.success(kind === "thumb" ? "Thumbnail uploaded" : `${uploaded.length} screenshot(s) uploaded`);
       refresh();
@@ -300,7 +300,7 @@ function ImagesCard({ project }: { project: ProjectRow }) {
       const next = path === project.thumbnail_path
         ? { thumbnail_path: null }
         : { gallery_paths: project.gallery_paths.filter((p) => p !== path) };
-      await saveProject(next as ProjectInsert, project.id);
+      await saveProject(next as Partial<ProjectInsert>, project.id);
       await removeImage(path);
       toast.success("Image removed");
       refresh();
@@ -361,7 +361,10 @@ function FilesCard({ projectId }: { projectId: string }) {
   const spec = FILE_TYPES.find((t) => t.value === type)!;
 
   async function upload() {
-    if (!file) return toast.error("Choose a file first.");
+    if (!file) {
+      toast.error("Choose a file first.");
+      return;
+    }
     setBusy(true);
     try {
       await uploadDeliverable(projectId, file, type, name, included);

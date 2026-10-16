@@ -38,9 +38,9 @@ export function friendly(msg: string) {
 }
 
 export interface AdminProjectFilters {
-  q?: string;
-  categoryId?: string;
-  status?: PublicationStatus;
+  q?: string | undefined;
+  categoryId?: string | undefined;
+  status?: PublicationStatus | undefined;
   sort: "title" | "price" | "updated";
   dir: "asc" | "desc";
   page: number;
@@ -128,13 +128,13 @@ export async function slugTaken(slug: string, exceptId?: string) {
   return (data ?? []).length > 0;
 }
 
-export async function saveProject(values: ProjectInsert, id?: string) {
+export async function saveProject(values: ProjectInsert | Partial<ProjectInsert>, id?: string) {
   if (id) {
-    const { data, error } = await supabase.from("projects").update(values).eq("id", id).select("id").single();
+    const { data, error } = await supabase.from("projects").update(values as Partial<ProjectInsert>).eq("id", id).select("id").single();
     fail(error);
     return data!.id;
   }
-  const { data, error } = await supabase.from("projects").insert(values).select("id").single();
+  const { data, error } = await supabase.from("projects").insert(values as ProjectInsert).select("id").single();
   fail(error);
   return data!.id;
 }
@@ -170,7 +170,9 @@ export async function removeImage(path: string) {
 export async function imagePreviewUrls(paths: string[]) {
   if (paths.length === 0) return {} as Record<string, string>;
   const { data } = await supabase.storage.from("project-images").createSignedUrls(paths, 3600);
-  return Object.fromEntries((data ?? []).filter((d) => d.path && d.signedUrl).map((d) => [d.path!, d.signedUrl]));
+  const out: Record<string, string> = {};
+  for (const d of data ?? []) if (d.path && d.signedUrl) out[d.path] = d.signedUrl;
+  return out;
 }
 
 export async function uploadDeliverable(projectId: string, file: File, type: FileType, displayName: string, included: boolean) {
