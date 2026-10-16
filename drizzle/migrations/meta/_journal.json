@@ -29,6 +29,13 @@
       "when": 1792144484419,
       "tag": "0003_phase4_payments_delivery",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792160646500,
+      "tag": "0004_phase6_assistant",
+      "breakpoints": true
     }
   ]
 }

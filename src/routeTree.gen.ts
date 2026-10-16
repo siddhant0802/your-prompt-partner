@@ -28,6 +28,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SupportPolicyRouteImport } from './routes/support-policy'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminAssistantRouteImport } from './routes/admin.assistant'
 import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
 import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
@@ -35,6 +36,7 @@ import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
 import { Route as AdminProjectsIndexRouteImport } from './routes/admin.projects.index'
 import { Route as AdminProjectsIdRouteImport } from './routes/admin.projects.$id'
 import { Route as AdminProjectsNewRouteImport } from './routes/admin.projects.new'
+import { Route as ApiPublicAssistantRouteImport } from './routes/api/public/assistant'
 import { Route as ApiPublicRazorpayWebhookRouteImport } from './routes/api/public/razorpay-webhook'
 
 const IndexRoute = IndexRouteImport.update({
@@ -132,6 +134,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminAssistantRoute = AdminAssistantRouteImport.update({
+  id: '/assistant',
+  path: '/assistant',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
   id: '/categories',
   path: '/categories',
@@ -167,6 +174,11 @@ const AdminProjectsNewRoute = AdminProjectsNewRouteImport.update({
   path: '/projects/new',
   getParentRoute: () => AdminRoute,
 } as any)
+const ApiPublicAssistantRoute = ApiPublicAssistantRouteImport.update({
+  id: '/api/public/assistant',
+  path: '/api/public/assistant',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicRazorpayWebhookRoute =
   ApiPublicRazorpayWebhookRouteImport.update({
     id: '/api/public/razorpay-webhook',
@@ -193,6 +205,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/support-policy': typeof SupportPolicyRoute
   '/terms': typeof TermsRoute
+  '/admin/assistant': typeof AdminAssistantRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -200,6 +213,7 @@ export interface FileRoutesByFullPath {
   '/projects/': typeof ProjectsIndexRoute
   '/admin/projects/$id': typeof AdminProjectsIdRoute
   '/admin/projects/new': typeof AdminProjectsNewRoute
+  '/api/public/assistant': typeof ApiPublicAssistantRoute
   '/api/public/razorpay-webhook': typeof ApiPublicRazorpayWebhookRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
 }
@@ -221,6 +235,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/support-policy': typeof SupportPolicyRoute
   '/terms': typeof TermsRoute
+  '/admin/assistant': typeof AdminAssistantRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -228,6 +243,7 @@ export interface FileRoutesByTo {
   '/projects': typeof ProjectsIndexRoute
   '/admin/projects/$id': typeof AdminProjectsIdRoute
   '/admin/projects/new': typeof AdminProjectsNewRoute
+  '/api/public/assistant': typeof ApiPublicAssistantRoute
   '/api/public/razorpay-webhook': typeof ApiPublicRazorpayWebhookRoute
   '/admin/projects': typeof AdminProjectsIndexRoute
 }
@@ -251,6 +267,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/support-policy': typeof SupportPolicyRoute
   '/terms': typeof TermsRoute
+  '/admin/assistant': typeof AdminAssistantRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -258,6 +275,7 @@ export interface FileRoutesById {
   '/projects/': typeof ProjectsIndexRoute
   '/admin/projects/$id': typeof AdminProjectsIdRoute
   '/admin/projects/new': typeof AdminProjectsNewRoute
+  '/api/public/assistant': typeof ApiPublicAssistantRoute
   '/api/public/razorpay-webhook': typeof ApiPublicRazorpayWebhookRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
 }
@@ -282,6 +300,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/support-policy'
     | '/terms'
+    | '/admin/assistant'
     | '/admin/categories'
     | '/admin/orders'
     | '/projects/$slug'
@@ -289,6 +308,7 @@ export interface FileRouteTypes {
     | '/projects/'
     | '/admin/projects/$id'
     | '/admin/projects/new'
+    | '/api/public/assistant'
     | '/api/public/razorpay-webhook'
     | '/admin/projects/'
   fileRoutesByTo: FileRoutesByTo
@@ -310,6 +330,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/support-policy'
     | '/terms'
+    | '/admin/assistant'
     | '/admin/categories'
     | '/admin/orders'
     | '/projects/$slug'
@@ -317,6 +338,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/admin/projects/$id'
     | '/admin/projects/new'
+    | '/api/public/assistant'
     | '/api/public/razorpay-webhook'
     | '/admin/projects'
   id:
@@ -339,6 +361,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/support-policy'
     | '/terms'
+    | '/admin/assistant'
     | '/admin/categories'
     | '/admin/orders'
     | '/projects/$slug'
@@ -346,6 +369,7 @@ export interface FileRouteTypes {
     | '/projects/'
     | '/admin/projects/$id'
     | '/admin/projects/new'
+    | '/api/public/assistant'
     | '/api/public/razorpay-webhook'
     | '/admin/projects/'
   fileRoutesById: FileRoutesById
@@ -371,6 +395,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   ProjectsSlugRoute: typeof ProjectsSlugRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
+  ApiPublicAssistantRoute: typeof ApiPublicAssistantRoute
   ApiPublicRazorpayWebhookRoute: typeof ApiPublicRazorpayWebhookRoute
 }
 
@@ -509,6 +534,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/assistant': {
+      id: '/admin/assistant'
+      path: '/assistant'
+      fullPath: '/admin/assistant'
+      preLoaderRoute: typeof AdminAssistantRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/categories': {
       id: '/admin/categories'
       path: '/categories'
@@ -558,6 +590,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProjectsNewRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/api/public/assistant': {
+      id: '/api/public/assistant'
+      path: '/api/public/assistant'
+      fullPath: '/api/public/assistant'
+      preLoaderRoute: typeof ApiPublicAssistantRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/razorpay-webhook': {
       id: '/api/public/razorpay-webhook'
       path: '/api/public/razorpay-webhook'
@@ -569,6 +608,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminAssistantRoute: typeof AdminAssistantRoute
   AdminCategoriesRoute: typeof AdminCategoriesRoute
   AdminOrdersRoute: typeof AdminOrdersRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -578,6 +618,7 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminAssistantRoute: AdminAssistantRoute,
   AdminCategoriesRoute: AdminCategoriesRoute,
   AdminOrdersRoute: AdminOrdersRoute,
   AdminIndexRoute: AdminIndexRoute,
@@ -609,6 +650,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   ProjectsSlugRoute: ProjectsSlugRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
+  ApiPublicAssistantRoute: ApiPublicAssistantRoute,
   ApiPublicRazorpayWebhookRoute: ApiPublicRazorpayWebhookRoute,
 }
 export const routeTree = rootRouteImport
