@@ -29,7 +29,6 @@ function ResetPasswordPage() {
     });
     supabase.auth.getSession().then(({ data }) => {
       if (data.session && isRecovery) setReady(true);
-      else if (!isRecovery) setReady(!!data.session && false);
     });
     return () => sub.subscription.unsubscribe();
   }, []);
