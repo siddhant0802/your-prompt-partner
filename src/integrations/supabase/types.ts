@@ -74,10 +74,57 @@ export type Database = {
         }
         Relationships: []
       }
+      download_logs: {
+        Row: {
+          created_at: string
+          file_name: string
+          id: string
+          order_id: string
+          project_file_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          file_name: string
+          id?: string
+          order_id: string
+          project_file_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          file_name?: string
+          id?: string
+          order_id?: string
+          project_file_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "download_logs_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "download_logs_project_file_id_fkey"
+            columns: ["project_file_id"]
+            isOneToOne: false
+            referencedRelation: "project_files"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       orders: {
         Row: {
           amount_paise: number
           created_at: string
+          currency: string
+          failure_reason: string | null
+          gateway: string
+          gateway_order_id: string | null
+          gateway_payment_id: string | null
           id: string
           paid_at: string | null
           payment_reference: string | null
@@ -85,10 +132,16 @@ export type Database = {
           status: string
           updated_at: string
           user_id: string
+          verified_at: string | null
         }
         Insert: {
           amount_paise: number
           created_at?: string
+          currency?: string
+          failure_reason?: string | null
+          gateway?: string
+          gateway_order_id?: string | null
+          gateway_payment_id?: string | null
           id?: string
           paid_at?: string | null
           payment_reference?: string | null
@@ -96,10 +149,16 @@ export type Database = {
           status?: string
           updated_at?: string
           user_id: string
+          verified_at?: string | null
         }
         Update: {
           amount_paise?: number
           created_at?: string
+          currency?: string
+          failure_reason?: string | null
+          gateway?: string
+          gateway_order_id?: string | null
+          gateway_payment_id?: string | null
           id?: string
           paid_at?: string | null
           payment_reference?: string | null
@@ -107,6 +166,7 @@ export type Database = {
           status?: string
           updated_at?: string
           user_id?: string
+          verified_at?: string | null
         }
         Relationships: [
           {
@@ -114,6 +174,50 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payment_events: {
+        Row: {
+          amount_paise: number | null
+          event_type: string
+          gateway_event_id: string
+          gateway_order_id: string | null
+          gateway_payment_id: string | null
+          id: string
+          order_id: string | null
+          outcome: string
+          received_at: string
+        }
+        Insert: {
+          amount_paise?: number | null
+          event_type: string
+          gateway_event_id: string
+          gateway_order_id?: string | null
+          gateway_payment_id?: string | null
+          id?: string
+          order_id?: string | null
+          outcome?: string
+          received_at?: string
+        }
+        Update: {
+          amount_paise?: number | null
+          event_type?: string
+          gateway_event_id?: string
+          gateway_order_id?: string | null
+          gateway_payment_id?: string | null
+          id?: string
+          order_id?: string | null
+          outcome?: string
+          received_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_events_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
             referencedColumns: ["id"]
           },
         ]

@@ -18,6 +18,8 @@
 - Publication rules (required fields, demo URL consistency, `published_at`) are enforced by a database trigger, mirrored in the admin form for friendly messages.
 - Audit rows for project creation, status/price changes and file add/remove are written by security-definer triggers into `audit_logs`.
 - Prices are display-only in the browser; checkout must re-read the price on the server and never trust URL or form values.
-- Unimplemented features (payments, downloads, purchases) render `PlaceholderPage` and must never simulate success.
-- Orders are readable only by their owner (and admins); no client may insert/update them — Phase 4 server code writes orders after verifying payment, so purchase access can never come from browser state.
+- Unimplemented features render `PlaceholderPage` and must never simulate success.
+- Orders are readable only by their owner (and admins); no client may insert/update them. Order payment state changes only in `applyPaymentSignal` (`src/lib/payments/razorpay.server.ts`) after a verified Razorpay signature/webhook plus amount/currency checks, using conditional updates and a one-paid-order-per-user-project index — so repeats, replays and browser state can never grant access.
+- Paid downloads are issued only by `getDownloadLink` server fn: own PAID order + file in that project's package → 2-minute signed URL, logged in `download_logs`.
+- Razorpay webhook (`/api/public/razorpay-webhook`) dedupes on the gateway event id in `payment_events`; live keys are refused unless `RAZORPAY_ALLOW_LIVE=true` (owner approval).
 - Storage buckets carry size limits and the image bucket only accepts image extensions (policy), so client-side checks are not the only guard.
