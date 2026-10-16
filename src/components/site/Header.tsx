@@ -3,6 +3,7 @@ import { Menu, Search, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "./Logo";
+import { useAuth } from "@/hooks/use-auth";
 
 const NAV = [
   { to: "/projects", label: "Explore Projects" },
@@ -13,6 +14,8 @@ const NAV = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const { user, isAdmin } = useAuth();
+  const account = isAdmin ? { to: "/admin" as const, label: "Admin" } : user ? { to: "/purchases" as const, label: "My account" } : { to: "/login" as const, label: "Sign in" };
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/75 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
@@ -36,7 +39,7 @@ export function Header() {
             </Link>
           </Button>
           <Button variant="glass" asChild>
-            <Link to="/login">Sign in</Link>
+            <Link to={account.to}>{account.label}</Link>
           </Button>
         </div>
         <Button
@@ -52,7 +55,7 @@ export function Header() {
       </div>
       {open && (
         <nav className="border-t border-border px-4 pb-4 md:hidden" aria-label="Mobile">
-          {[...NAV, { to: "/search", label: "Search" }, { to: "/login", label: "Sign in" }].map((n) => (
+          {[...NAV, { to: "/search", label: "Search" }, account].map((n) => (
             <Link
               key={n.to}
               to={n.to}
