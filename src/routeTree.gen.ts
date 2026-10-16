@@ -10,33 +10,258 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as DeliveryPolicyRouteImport } from './routes/delivery-policy'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as PaymentFailureRouteImport } from './routes/payment-failure'
+import { Route as PaymentSuccessRouteImport } from './routes/payment-success'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PurchasesRouteImport } from './routes/purchases'
+import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
+import { Route as SearchRouteImport } from './routes/search'
+import { Route as SupportPolicyRouteImport } from './routes/support-policy'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
+import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DeliveryPolicyRoute = DeliveryPolicyRouteImport.update({
+  id: '/delivery-policy',
+  path: '/delivery-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaymentFailureRoute = PaymentFailureRouteImport.update({
+  id: '/payment-failure',
+  path: '/payment-failure',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaymentSuccessRoute = PaymentSuccessRouteImport.update({
+  id: '/payment-success',
+  path: '/payment-success',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PurchasesRoute = PurchasesRouteImport.update({
+  id: '/purchases',
+  path: '/purchases',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RefundPolicyRoute = RefundPolicyRouteImport.update({
+  id: '/refund-policy',
+  path: '/refund-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupportPolicyRoute = SupportPolicyRouteImport.update({
+  id: '/support-policy',
+  path: '/support-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
+  id: '/projects/',
+  path: '/projects/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
+  id: '/projects/$slug',
+  path: '/projects/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/checkout': typeof CheckoutRoute
+  '/contact': typeof ContactRoute
+  '/delivery-policy': typeof DeliveryPolicyRoute
+  '/faq': typeof FaqRoute
+  '/login': typeof LoginRoute
+  '/payment-failure': typeof PaymentFailureRoute
+  '/payment-success': typeof PaymentSuccessRoute
+  '/privacy': typeof PrivacyRoute
+  '/purchases': typeof PurchasesRoute
+  '/refund-policy': typeof RefundPolicyRoute
+  '/search': typeof SearchRoute
+  '/support-policy': typeof SupportPolicyRoute
+  '/terms': typeof TermsRoute
+  '/projects/$slug': typeof ProjectsSlugRoute
+  '/projects/': typeof ProjectsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/checkout': typeof CheckoutRoute
+  '/contact': typeof ContactRoute
+  '/delivery-policy': typeof DeliveryPolicyRoute
+  '/faq': typeof FaqRoute
+  '/login': typeof LoginRoute
+  '/payment-failure': typeof PaymentFailureRoute
+  '/payment-success': typeof PaymentSuccessRoute
+  '/privacy': typeof PrivacyRoute
+  '/purchases': typeof PurchasesRoute
+  '/refund-policy': typeof RefundPolicyRoute
+  '/search': typeof SearchRoute
+  '/support-policy': typeof SupportPolicyRoute
+  '/terms': typeof TermsRoute
+  '/projects/$slug': typeof ProjectsSlugRoute
+  '/projects': typeof ProjectsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/checkout': typeof CheckoutRoute
+  '/contact': typeof ContactRoute
+  '/delivery-policy': typeof DeliveryPolicyRoute
+  '/faq': typeof FaqRoute
+  '/login': typeof LoginRoute
+  '/payment-failure': typeof PaymentFailureRoute
+  '/payment-success': typeof PaymentSuccessRoute
+  '/privacy': typeof PrivacyRoute
+  '/purchases': typeof PurchasesRoute
+  '/refund-policy': typeof RefundPolicyRoute
+  '/search': typeof SearchRoute
+  '/support-policy': typeof SupportPolicyRoute
+  '/terms': typeof TermsRoute
+  '/projects/$slug': typeof ProjectsSlugRoute
+  '/projects/': typeof ProjectsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/checkout'
+    | '/contact'
+    | '/delivery-policy'
+    | '/faq'
+    | '/login'
+    | '/payment-failure'
+    | '/payment-success'
+    | '/privacy'
+    | '/purchases'
+    | '/refund-policy'
+    | '/search'
+    | '/support-policy'
+    | '/terms'
+    | '/projects/$slug'
+    | '/projects/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/checkout'
+    | '/contact'
+    | '/delivery-policy'
+    | '/faq'
+    | '/login'
+    | '/payment-failure'
+    | '/payment-success'
+    | '/privacy'
+    | '/purchases'
+    | '/refund-policy'
+    | '/search'
+    | '/support-policy'
+    | '/terms'
+    | '/projects/$slug'
+    | '/projects'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/checkout'
+    | '/contact'
+    | '/delivery-policy'
+    | '/faq'
+    | '/login'
+    | '/payment-failure'
+    | '/payment-success'
+    | '/privacy'
+    | '/purchases'
+    | '/refund-policy'
+    | '/search'
+    | '/support-policy'
+    | '/terms'
+    | '/projects/$slug'
+    | '/projects/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRoute
+  CheckoutRoute: typeof CheckoutRoute
+  ContactRoute: typeof ContactRoute
+  DeliveryPolicyRoute: typeof DeliveryPolicyRoute
+  FaqRoute: typeof FaqRoute
+  LoginRoute: typeof LoginRoute
+  PaymentFailureRoute: typeof PaymentFailureRoute
+  PaymentSuccessRoute: typeof PaymentSuccessRoute
+  PrivacyRoute: typeof PrivacyRoute
+  PurchasesRoute: typeof PurchasesRoute
+  RefundPolicyRoute: typeof RefundPolicyRoute
+  SearchRoute: typeof SearchRoute
+  SupportPolicyRoute: typeof SupportPolicyRoute
+  TermsRoute: typeof TermsRoute
+  ProjectsSlugRoute: typeof ProjectsSlugRoute
+  ProjectsIndexRoute: typeof ProjectsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +273,147 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/delivery-policy': {
+      id: '/delivery-policy'
+      path: '/delivery-policy'
+      fullPath: '/delivery-policy'
+      preLoaderRoute: typeof DeliveryPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payment-failure': {
+      id: '/payment-failure'
+      path: '/payment-failure'
+      fullPath: '/payment-failure'
+      preLoaderRoute: typeof PaymentFailureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payment-success': {
+      id: '/payment-success'
+      path: '/payment-success'
+      fullPath: '/payment-success'
+      preLoaderRoute: typeof PaymentSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/purchases': {
+      id: '/purchases'
+      path: '/purchases'
+      fullPath: '/purchases'
+      preLoaderRoute: typeof PurchasesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/refund-policy': {
+      id: '/refund-policy'
+      path: '/refund-policy'
+      fullPath: '/refund-policy'
+      preLoaderRoute: typeof RefundPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/support-policy': {
+      id: '/support-policy'
+      path: '/support-policy'
+      fullPath: '/support-policy'
+      preLoaderRoute: typeof SupportPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects/': {
+      id: '/projects/'
+      path: '/projects'
+      fullPath: '/projects/'
+      preLoaderRoute: typeof ProjectsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects/$slug': {
+      id: '/projects/$slug'
+      path: '/projects/$slug'
+      fullPath: '/projects/$slug'
+      preLoaderRoute: typeof ProjectsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AdminRoute: AdminRoute,
+  CheckoutRoute: CheckoutRoute,
+  ContactRoute: ContactRoute,
+  DeliveryPolicyRoute: DeliveryPolicyRoute,
+  FaqRoute: FaqRoute,
+  LoginRoute: LoginRoute,
+  PaymentFailureRoute: PaymentFailureRoute,
+  PaymentSuccessRoute: PaymentSuccessRoute,
+  PrivacyRoute: PrivacyRoute,
+  PurchasesRoute: PurchasesRoute,
+  RefundPolicyRoute: RefundPolicyRoute,
+  SearchRoute: SearchRoute,
+  SupportPolicyRoute: SupportPolicyRoute,
+  TermsRoute: TermsRoute,
+  ProjectsSlugRoute: ProjectsSlugRoute,
+  ProjectsIndexRoute: ProjectsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
