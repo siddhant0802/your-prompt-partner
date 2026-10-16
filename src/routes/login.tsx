@@ -67,6 +67,17 @@ function LoginPage() {
     }
   }
 
+  async function forgot() {
+    const parsed = schema.shape.email.safeParse(email);
+    if (!parsed.success) return setErrors({ email: "Enter your email above first" });
+    setBusy(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(parsed.data, { redirectTo: `${window.location.origin}/reset-password` });
+    setBusy(false);
+    // Same message either way, so the form doesn't reveal which emails have accounts.
+    if (error && error.status === 429) toast.error("Too many requests. Please wait a minute and try again.");
+    else toast.success("If an account exists for that email, a reset link is on its way.");
+  }
+
   async function google() {
     const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: `${window.location.origin}/login${next ? `?next=${encodeURIComponent(next)}` : ""}` });
     if (result.error) toast.error("Google sign-in failed. Please try again.");
@@ -100,7 +111,12 @@ function LoginPage() {
             {busy && <Loader2 className="animate-spin" />} {mode === "signin" ? "Sign in" : "Create account"}
           </Button>
         </form>
-        <button type="button" className="mt-5 w-full text-center text-sm text-muted-foreground hover:text-foreground" onClick={() => setMode(mode === "signin" ? "signup" : "signin")}>
+        {mode === "signin" && (
+          <button type="button" className="mt-4 w-full text-center text-sm text-muted-foreground hover:text-foreground" onClick={forgot} disabled={busy}>
+            Forgot password?
+          </button>
+        )}
+        <button type="button" className="mt-3 w-full text-center text-sm text-muted-foreground hover:text-foreground" onClick={() => setMode(mode === "signin" ? "signup" : "signin")}>
           {mode === "signin" ? "New here? Create an account" : "Already have an account? Sign in"}
         </button>
       </div>

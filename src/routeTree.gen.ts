@@ -22,6 +22,7 @@ import { Route as PaymentSuccessRouteImport } from './routes/payment-success'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PurchasesRouteImport } from './routes/purchases'
 import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as SupportPolicyRouteImport } from './routes/support-policy'
 import { Route as TermsRouteImport } from './routes/terms'
@@ -98,6 +99,11 @@ const RefundPolicyRoute = RefundPolicyRouteImport.update({
   path: '/refund-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
@@ -163,6 +169,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/purchases': typeof PurchasesRoute
   '/refund-policy': typeof RefundPolicyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
   '/support-policy': typeof SupportPolicyRoute
   '/terms': typeof TermsRoute
@@ -187,6 +194,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/purchases': typeof PurchasesRoute
   '/refund-policy': typeof RefundPolicyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
   '/support-policy': typeof SupportPolicyRoute
   '/terms': typeof TermsRoute
@@ -213,6 +221,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/purchases': typeof PurchasesRoute
   '/refund-policy': typeof RefundPolicyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
   '/support-policy': typeof SupportPolicyRoute
   '/terms': typeof TermsRoute
@@ -240,6 +249,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/purchases'
     | '/refund-policy'
+    | '/reset-password'
     | '/search'
     | '/support-policy'
     | '/terms'
@@ -264,6 +274,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/purchases'
     | '/refund-policy'
+    | '/reset-password'
     | '/search'
     | '/support-policy'
     | '/terms'
@@ -289,6 +300,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/purchases'
     | '/refund-policy'
+    | '/reset-password'
     | '/search'
     | '/support-policy'
     | '/terms'
@@ -315,6 +327,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   PurchasesRoute: typeof PurchasesRoute
   RefundPolicyRoute: typeof RefundPolicyRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SearchRoute: typeof SearchRoute
   SupportPolicyRoute: typeof SupportPolicyRoute
   TermsRoute: typeof TermsRoute
@@ -413,6 +426,13 @@ declare module '@tanstack/react-router' {
       path: '/refund-policy'
       fullPath: '/refund-policy'
       preLoaderRoute: typeof RefundPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/search': {
@@ -520,6 +540,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   PurchasesRoute: PurchasesRoute,
   RefundPolicyRoute: RefundPolicyRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SearchRoute: SearchRoute,
   SupportPolicyRoute: SupportPolicyRoute,
   TermsRoute: TermsRoute,
