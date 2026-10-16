@@ -158,7 +158,7 @@ export const listMyPurchases = createServerFn({ method: "POST" })
     const signed = thumbs.length ? (await supabaseAdmin.storage.from("project-images").createSignedUrls(thumbs, 3600)).data ?? [] : [];
     const publicBase = process.env["VITE_SUPABASE_URL"] ?? "";
     const serverBase = process.env["SUPABASE_URL"] ?? "";
-    const thumbUrl = new Map(signed.filter((s) => s.path && s.signedUrl).map((s) => [s.path!, publicBase ? s.signedUrl.replace(serverBase, publicBase) : s.signedUrl]));
+    const thumbUrl = new Map(signed.filter((s) => s.path && s.signedUrl).map((s) => [s.path!, publicBase ? s.signedUrl!.replace(serverBase, publicBase) : s.signedUrl!]));
     return (orders ?? []).map((o) => {
       const p = projects?.find((x) => x.id === o.project_id);
       const paid = o.status === "PAID";
