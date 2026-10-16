@@ -1,4 +1,4 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { Bot, Loader2, MessageCircleQuestion, RotateCcw, Send, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
@@ -185,13 +185,14 @@ export function AssistantWidget() {
 }
 
 function Markdown({ text, onNavigate }: { text: string; onNavigate?: () => void }) {
+  const navigate = useNavigate();
   return (
     <div className={cn("space-y-2 break-words [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5 [&_strong]:font-semibold [&_code]:rounded [&_code]:bg-muted [&_code]:px-1")}>
       <ReactMarkdown
         components={{
           a: ({ href, children }) =>
             href?.startsWith("/") ? (
-              <Link to={href} onClick={onNavigate} className="font-medium text-primary underline underline-offset-2">{children}</Link>
+              <a href={href} onClick={(e) => { e.preventDefault(); onNavigate?.(); void navigate({ href }); }} className="font-medium text-primary underline underline-offset-2">{children}</a>
             ) : (
               <a href={href} target="_blank" rel="noopener noreferrer nofollow" className="font-medium text-primary underline underline-offset-2">{children}</a>
             ),
