@@ -19,3 +19,5 @@
 - Audit rows for project creation, status/price changes and file add/remove are written by security-definer triggers into `audit_logs`.
 - Prices are display-only in the browser; checkout must re-read the price on the server and never trust URL or form values.
 - Unimplemented features (payments, downloads, purchases) render `PlaceholderPage` and must never simulate success.
+- Orders are readable only by their owner (and admins); no client may insert/update them — Phase 4 server code writes orders after verifying payment, so purchase access can never come from browser state.
+- Storage buckets carry size limits and the image bucket only accepts image extensions (policy), so client-side checks are not the only guard.
