@@ -269,3 +269,17 @@
 @media (prefers-reduced-motion: reduce) {
   .header-enter, .logo-enter { animation: none !important; }
 }
+
+/* WhatsApp floating button (isolated) */
+:root { --whatsapp: oklch(0.72 0.19 150); --whatsapp-foreground: oklch(1 0 0); }
+@keyframes wa-in { from { opacity: 0; transform: translateY(16px) scale(0.8); } to { opacity: 1; transform: none; } }
+@keyframes wa-ring { 0% { opacity: 0.55; transform: scale(1); } 100% { opacity: 0; transform: scale(1.6); } }
+.wa-root { animation: wa-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both; }
+.wa-btn { background: var(--whatsapp); color: var(--whatsapp-foreground); box-shadow: 0 10px 24px -10px color-mix(in oklab, var(--whatsapp) 70%, transparent); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.wa-btn:hover, .wa-btn:focus-visible { transform: scale(1.08); box-shadow: 0 0 0 6px color-mix(in oklab, var(--whatsapp) 18%, transparent), 0 14px 28px -10px color-mix(in oklab, var(--whatsapp) 80%, transparent); }
+.wa-btn:active { transform: scale(0.94); }
+.wa-ring { background: var(--whatsapp); animation: wa-ring 2.6s ease-out infinite; }
+.wa-tip { opacity: 0; transform: translateX(6px); transition: opacity 0.2s ease, transform 0.2s ease; }
+.wa-btn:hover .wa-tip, .wa-btn:focus-visible .wa-tip { opacity: 1; transform: none; }
+.wa-bubble { animation: ai-pop-in 0.35s ease-out both; }
+@media (prefers-reduced-motion: reduce) { .wa-root, .wa-ring, .wa-bubble { animation: none !important; } .wa-ring { display: none; } }

@@ -16,6 +16,7 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Toaster } from "@/components/ui/sonner";
 import { AssistantWidget } from "@/components/site/AssistantWidget";
+import { WhatsAppButton } from "@/components/site/WhatsAppButton";
 import { AuthProvider } from "@/hooks/use-auth";
 
 function NotFoundComponent() {
@@ -135,6 +136,7 @@ function RootComponent() {
         </main>
         <Footer />
       </div>
+      <WhatsAppButton />
       <AssistantWidget />
       <Toaster richColors position="top-right" />
       </AuthProvider>
