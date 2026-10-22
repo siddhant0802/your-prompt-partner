@@ -78,9 +78,19 @@ function LoginPage() {
     else toast.success("If an account exists for that email, a reset link is on its way.");
   }
 
+  // Google OAuth: on the Lovable-managed backend it must use Lovable's broker;
+  // on a self-hosted backend project, the project's own Google provider directly.
+  const managedBackend = (import.meta.env.VITE_SUPABASE_URL ?? "").includes(".lovable.cloud");
+
   async function google() {
-    const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: `${window.location.origin}/login${next ? `?next=${encodeURIComponent(next)}` : ""}` });
-    if (result.error) toast.error("Google sign-in failed. Please try again.");
+    const redirect = `${window.location.origin}/login${next ? `?next=${encodeURIComponent(next)}` : ""}`;
+    if (managedBackend) {
+      const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: redirect });
+      if (result.error) toast.error("Google sign-in failed. Please try again.");
+      return;
+    }
+    const { error } = await supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo: redirect } });
+    if (error) toast.error("Google sign-in failed. Please try again.");
   }
 
   return (
