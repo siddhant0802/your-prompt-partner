@@ -80,7 +80,7 @@ function LoginPage() {
 
   // Google OAuth: on the Lovable-managed backend it must use Lovable's broker;
   // on a self-hosted backend project, the project's own Google provider directly.
-  const managedBackend = (import.meta.env.VITE_SUPABASE_URL ?? "").includes(".lovable.cloud");
+  const managedBackend = (import.meta.env["VITE_SUPABASE_URL"] ?? "").includes(".lovable.cloud");
 
   async function google() {
     const redirect = `${window.location.origin}/login${next ? `?next=${encodeURIComponent(next)}` : ""}`;
