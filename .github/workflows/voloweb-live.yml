@@ -1,5 +1,5 @@
 
-name: VoloWeb Live Candidate Deployment
+name: VoloWeb Live Deployment
 
 on:
   workflow_dispatch:
@@ -11,12 +11,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: voloweb-live-candidate
+  group: voloweb-live-deployment
   cancel-in-progress: false
 
 jobs:
-  build-and-deploy-candidate:
-    name: Build and upload live candidate
+  deploy:
+    name: Build and deploy live app
     runs-on: ubuntu-latest
 
     steps:
@@ -31,7 +31,7 @@ jobs:
       - name: Install dependencies
         run: npm install --no-package-lock
 
-      - name: Build cPanel application
+      - name: Build production application
         run: npm run build:cpanel
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -39,16 +39,16 @@ jobs:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
 
-      - name: Validate build output
-        shell: bash
+      - name: Validate build and prepare restart trigger
         run: |
-          test -f .output/server/index.mjs
           test -f .output/app.cjs
-          test -d .output/public
+          test -f .output/server/index.mjs
           test -f .output/nitro.json
-          echo "Build validation passed."
+          test -d .output/public
+          mkdir -p .output/tmp
+          date -u +%FT%TZ > .output/tmp/restart.txt
 
-      - name: Upload candidate to cPanel
+      - name: Upload live application files
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.VOLOWEB_FTP_HOST }}
@@ -58,6 +58,6 @@ jobs:
           username: ${{ secrets.VOLOWEB_FTP_USERNAME }}
           password: ${{ secrets.VOLOWEB_FTP_PASSWORD }}
           local-dir: .output/
-          server-dir: ./live-candidate-${{ github.run_id }}-${{ github.run_attempt }}/
+          server-dir: ./
           dangerous-clean-slate: false
           log-level: standard
