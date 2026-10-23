@@ -1,18 +1,26 @@
-// cPanel / Phusion Passenger startup file.
-// Passenger loads the startup file with require(); pointing it straight at an
-// ES module (server/index.mjs) makes Node's ESM loader touch process.stdin,
-// which Passenger has replaced, and crashes with "Error: open EEXIST".
-// This CommonJS wrapper avoids that by loading the real server dynamically.
+
 "use strict";
 
+const { Readable } = require("node:stream");
 const path = require("node:path");
 const { pathToFileURL } = require("node:url");
 
+// Avoid Passenger's stdin socket conflict during Node.js ESM initialization.
+const safeStdin = new Readable({ read() {} });
+
+Object.defineProperty(process, "stdin", {
+  configurable: true,
+  enumerable: true,
+  get: () => safeStdin,
+});
+
 process.env.NODE_ENV = process.env.NODE_ENV || "production";
-// Passenger provides PORT; listen on all interfaces unless told otherwise.
 process.env.HOST = process.env.HOST || "0.0.0.0";
 process.env.NITRO_HOST = process.env.NITRO_HOST || process.env.HOST;
-if (process.env.PORT) process.env.NITRO_PORT = process.env.NITRO_PORT || process.env.PORT;
+
+if (process.env.PORT) {
+  process.env.NITRO_PORT = process.env.NITRO_PORT || process.env.PORT;
+}
 
 const entry = path.join(__dirname, "server", "index.mjs");
 
