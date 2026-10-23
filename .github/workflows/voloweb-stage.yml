@@ -1,0 +1,63 @@
+
+name: VoloWeb FTPS Staging
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: voloweb-staging
+  cancel-in-progress: false
+
+jobs:
+  build-and-stage:
+    name: Build and upload staging candidate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build cPanel application
+        run: npm run build:cpanel
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+
+      - name: Validate build output
+        shell: bash
+        run: |
+          test -f .output/server/index.mjs
+          test -f .output/app.cjs
+          test -d .output/public
+          echo "Build validation passed."
+
+      - name: Upload build to isolated staging folder
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.VOLOWEB_FTP_HOST }}
+          port: ${{ secrets.VOLOWEB_FTP_PORT }}
+          protocol: ftps
+          security: strict
+          username: ${{ secrets.VOLOWEB_FTP_USERNAME }}
+          password: ${{ secrets.VOLOWEB_FTP_PASSWORD }}
+          local-dir: .output/
+          server-dir: ./staging-${{ github.run_id }}-${{ github.run_attempt }}/
+          dangerous-clean-slate: false
+          log-level: standard
